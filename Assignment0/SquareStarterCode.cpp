@@ -161,12 +161,10 @@ void mouseClicked(float m_x, float m_y){
     if (x > 1.05 || y > 1.05 || x < -1.05 || y < -1.05) return; //TODO: Test your understanding: Why 1.05 and not 1?
     if (x < .9 && x > -.9 && y < .9 && y > -.9){ //TODO: Test your understanding: What happens if you change .9 to .8?
         g_bTranslate = true;
-        cout << "translate in click" << endl;
-    }
-    else{
+    } else {
         g_bScale = true;
-        cout << "scale in click" << endl;
     }
+
 }
 
 //TODO: Update the position, rotation, or scale based on the mouse movement
@@ -186,7 +184,7 @@ void mouseDragged(float m_x, float m_y){
         cout << "scale on drag" << endl;
         cout << "g_size before: " << g_size << endl;
         // scale when dragging on the edges
-        g_size += (m_x - g_clicked_x) + (m_y - g_clicked_y);
+        g_size += ((m_x - g_clicked_x) + (m_y - g_clicked_y)) / 4;
         cout << "g_size after: " << g_size << endl;
     }
     
