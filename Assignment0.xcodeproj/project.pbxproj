@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		65BE8AD421406C44004B8021 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 65BE8AD321406C44004B8021 /* main.cpp */; };
+		65BE8AE021406C9C004B8021 /* SquareStarterCode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 65BE8ADB21406C9C004B8021 /* SquareStarterCode.cpp */; };
+		65BE8AE32141921B004B8021 /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65BE8AE22141921B004B8021 /* SDL2.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -24,7 +25,13 @@
 
 /* Begin PBXFileReference section */
 		65BE8AD021406C44004B8021 /* Assignment0 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Assignment0; sourceTree = BUILT_PRODUCTS_DIR; };
-		65BE8AD321406C44004B8021 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		65BE8ADA21406C9C004B8021 /* glad */ = {isa = PBXFileReference; lastKnownFileType = folder; path = glad; sourceTree = "<group>"; };
+		65BE8ADB21406C9C004B8021 /* SquareStarterCode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SquareStarterCode.cpp; sourceTree = "<group>"; };
+		65BE8ADC21406C9C004B8021 /* goldy.ppm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = goldy.ppm; sourceTree = "<group>"; };
+		65BE8ADD21406C9C004B8021 /* brick.ppm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = brick.ppm; sourceTree = "<group>"; };
+		65BE8ADE21406C9C004B8021 /* goldySmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = goldySmall.png; sourceTree = "<group>"; };
+		65BE8ADF21406C9C004B8021 /* test.ppm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = test.ppm; sourceTree = "<group>"; };
+		65BE8AE22141921B004B8021 /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../../../../../Library/Frameworks/SDL2.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +39,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				65BE8AE32141921B004B8021 /* SDL2.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -43,6 +51,7 @@
 			children = (
 				65BE8AD221406C44004B8021 /* Assignment0 */,
 				65BE8AD121406C44004B8021 /* Products */,
+				65BE8AE12141921A004B8021 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -57,9 +66,22 @@
 		65BE8AD221406C44004B8021 /* Assignment0 */ = {
 			isa = PBXGroup;
 			children = (
-				65BE8AD321406C44004B8021 /* main.cpp */,
+				65BE8ADD21406C9C004B8021 /* brick.ppm */,
+				65BE8ADA21406C9C004B8021 /* glad */,
+				65BE8ADC21406C9C004B8021 /* goldy.ppm */,
+				65BE8ADE21406C9C004B8021 /* goldySmall.png */,
+				65BE8ADB21406C9C004B8021 /* SquareStarterCode.cpp */,
+				65BE8ADF21406C9C004B8021 /* test.ppm */,
 			);
 			path = Assignment0;
+			sourceTree = "<group>";
+		};
+		65BE8AE12141921A004B8021 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				65BE8AE22141921B004B8021 /* SDL2.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -118,7 +140,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				65BE8AD421406C44004B8021 /* main.cpp in Sources */,
+				65BE8AE021406C9C004B8021 /* SquareStarterCode.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -241,6 +263,10 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4D8XDT6VNY;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LOCAL_LIBRARY_DIR)/Frameworks",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -250,6 +276,10 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4D8XDT6VNY;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LOCAL_LIBRARY_DIR)/Frameworks",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
