@@ -189,8 +189,11 @@ void mouseDragged(float m_x, float m_y){
         // we don't want the size to go greater than 1 as that means we can't see the entire square on the screen at once
         if (g_size > 1) {
             g_size = 1;
+        
+        // if the size can go under 0, then it'll do weird stuff - therefore, this must be prevented by making it stay at/above a really small positive value
+        } else if (g_size < 0.01) {
+            g_size = 0.01;
         }
-        cout << "g_size after: " << g_size << endl;
     }
     
     if (g_bRotate){
