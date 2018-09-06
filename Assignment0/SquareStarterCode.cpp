@@ -185,6 +185,11 @@ void mouseDragged(float m_x, float m_y){
         cout << "g_size before: " << g_size << endl;
         // scale when dragging on the edges
         g_size += ((m_x - g_clicked_x) + (m_y - g_clicked_y)) / 4;
+        
+        // we don't want the size to go greater than 1 as that means we can't see the entire square on the screen at once
+        if (g_size > 1) {
+            g_size = 1;
+        }
         cout << "g_size after: " << g_size << endl;
     }
     
