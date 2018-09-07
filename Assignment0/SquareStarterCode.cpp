@@ -177,17 +177,7 @@ void mouseClicked(float m_x, float m_y){
 //  I've implemented the logic for position, you need to do scaling and angle
 //TODO: Notice how smooth draging the square is (e.g., there are no "jumps" when you click), 
 //      try to make your implementation of rotate and scale as smooth
-void mouseDragged(float m_x, float m_y){
-    
-   // cout << "m_x: " << m_x << endl;
-    //cout << "m_y: " << m_y << endl;
-    
-    //cout << "g_clicked_x: " << g_clicked_x << endl;
-    //cout << "g_clicked_y: " << g_clicked_y << endl;
-    
-    //cout << "g_lastCenter_x: " << g_lastCenter_x << endl;
-   // cout << "g_lastCenter_y: " << g_lastCenter_y << endl;
-    
+void mouseDragged(float m_x, float m_y) {
     // to only translate if inside the square - compare the mouse position to the square's area and see if it falls in the square's area; if it does, then move the square; else, do nothing
     if (g_bTranslate){
         g_pos_x = m_x-g_clicked_x+g_lastCenter_x;
@@ -196,15 +186,7 @@ void mouseDragged(float m_x, float m_y){
     
     // Compute the new size, g_size, based on the mouse positions
     if (g_bScale){
-        // scale when dragging on the edges
-        
-        //cout << "x difference"
-        
-        // it looks like g_clicked_size would be useful, but once again, where are those intermediate values? Are we expected to have to add more global vars?
-        
-        //g_size += ((m_x - g_lastCenter_x) + (m_y - g_lastCenter_y)) / 4;
-        //g_size +=
-        
+        // scale when dragging on the edges - take into account drags in both x and y direction
         g_size = (m_x - g_clicked_x) + (m_y - g_clicked_y) + g_clicked_size;
         
         // we don't want the size to go greater than 1 as that means we can't see the entire square on the screen at once
