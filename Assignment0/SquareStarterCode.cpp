@@ -90,11 +90,17 @@ unsigned char* loadImage(int& img_w, int& img_h){
     }
     
     //TODO:
-    //while(ppmFile>> ...){
-    //    //Store the RGB pixel data from the file into an array
-    //}
+    char nextValue;
+    int currentIndex = 0;
+   /* while(ppmFile >> nextValue){
+        img_data[currentIndex] = nextValue;
+        currentIndex++;
+    }*/
     
-    // img_data is the array to store into - once the file stores into that array, the loops below can be removed
+    // after adding the image data loading stuff,
+    
+    // img_data (a character array) is the array to store into - once the file stores into that array, the loops below can be removed
+    
     
     
     //TODO: This loop puts in fake data, replace with the actual pixels read from the file
@@ -171,7 +177,16 @@ void mouseClicked(float m_x, float m_y){
 //  I've implemented the logic for position, you need to do scaling and angle
 //TODO: Notice how smooth draging the square is (e.g., there are no "jumps" when you click), 
 //      try to make your implementation of rotate and scale as smooth
-void mouseDragged(float m_x, float m_y){   
+void mouseDragged(float m_x, float m_y){
+    
+   // cout << "m_x: " << m_x << endl;
+    //cout << "m_y: " << m_y << endl;
+    
+    //cout << "g_clicked_x: " << g_clicked_x << endl;
+    //cout << "g_clicked_y: " << g_clicked_y << endl;
+    
+    //cout << "g_lastCenter_x: " << g_lastCenter_x << endl;
+   // cout << "g_lastCenter_y: " << g_lastCenter_y << endl;
     
     // to only translate if inside the square - compare the mouse position to the square's area and see if it falls in the square's area; if it does, then move the square; else, do nothing
     if (g_bTranslate){
@@ -179,12 +194,18 @@ void mouseDragged(float m_x, float m_y){
         g_pos_y = m_y-g_clicked_y+g_lastCenter_y;
     }
     
+    // Compute the new size, g_size, based on the mouse positions
     if (g_bScale){
-        //Compute the new size, g_size, based on the mouse positions
-        cout << "scale on drag" << endl;
-        cout << "g_size before: " << g_size << endl;
         // scale when dragging on the edges
-        g_size += ((m_x - g_clicked_x) + (m_y - g_clicked_y)) / 4;
+        
+        //cout << "x difference"
+        
+        // it looks like g_clicked_size would be useful, but once again, where are those intermediate values? Are we expected to have to add more global vars?
+        
+        //g_size += ((m_x - g_lastCenter_x) + (m_y - g_lastCenter_y)) / 4;
+        //g_size +=
+        
+        g_size = (m_x - g_clicked_x) + (m_y - g_clicked_y) + g_clicked_size;
         
         // we don't want the size to go greater than 1 as that means we can't see the entire square on the screen at once
         if (g_size > 1) {
