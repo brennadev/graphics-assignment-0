@@ -90,12 +90,18 @@ unsigned char* loadImage(int& img_w, int& img_h){
     }
     
     //TODO:
-    char nextValue;
+    //char nextValue;
     int currentIndex = 0;
-   /* while(ppmFile >> nextValue){
-        img_data[currentIndex] = nextValue;
-        currentIndex++;
-    }*/
+    int red, green, blue;
+    // the loop below crashes
+    while(ppmFile >> red >> green >> blue){
+        //img_data[currentIndex] = nextValue;
+        img_data[currentIndex] = red;
+        img_data[currentIndex + 1] = green;
+        img_data[currentIndex + 2] = blue;
+        img_data[currentIndex + 3] = 255;
+        currentIndex += 4;
+    }
     
     // after adding the image data loading stuff,
     
@@ -104,7 +110,7 @@ unsigned char* loadImage(int& img_w, int& img_h){
     
     
     //TODO: This loop puts in fake data, replace with the actual pixels read from the file
-    for (int i = 0; i < img_h; i++){
+    /*for (int i = 0; i < img_h; i++){
         float fi = i/(float)img_h;
         for (int j = 0; j < img_w; j++){
             float fj = j/(float)img_w;
@@ -113,7 +119,9 @@ unsigned char* loadImage(int& img_w, int& img_h){
             img_data[i*img_w*4 + j*4 + 2] = fi*250;  //Blue
             img_data[i*img_w*4 + j*4 + 3] = 255;  //Alpha
         }
-    }
+    }*/
+    
+    // brighten/darken image - can probably change the RGB values like changing the brightness value
     
     return img_data;
 }
