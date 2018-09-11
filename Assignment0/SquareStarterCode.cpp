@@ -17,7 +17,7 @@
 using namespace std;
 
 //Name of image texture
-string textureName = "test.ppm";
+string textureName = "goldy.ppm";
 
 //Globals to store the state of the square (position, width, and angle)
 // position is based on center of square
@@ -96,6 +96,27 @@ unsigned char* loadImage(int& img_w, int& img_h){
     // the loop below crashes
     while(ppmFile >> red >> green >> blue){
         //img_data[currentIndex] = nextValue;
+        
+        // darken the image before storing into the texture data
+        const int darknessAmount = 50;
+        red -= darknessAmount;
+        green -= darknessAmount;
+        blue -= darknessAmount;
+        
+        // make sure nothing goes below 0 as negative values are invalid
+        if (red < 0) {
+            red = 0;
+        }
+        
+        if (green < 0) {
+            green = 0;
+        }
+        
+        if (blue < 0) {
+            blue = 0;
+        }
+        
+        
         img_data[currentIndex] = red;
         img_data[currentIndex + 1] = green;
         img_data[currentIndex + 2] = blue;
@@ -103,11 +124,7 @@ unsigned char* loadImage(int& img_w, int& img_h){
         currentIndex += 4;
     }
     
-    // after adding the image data loading stuff,
-    
-    // img_data (a character array) is the array to store into - once the file stores into that array, the loops below can be removed
-    
-    
+
     
     //TODO: This loop puts in fake data, replace with the actual pixels read from the file
     /*for (int i = 0; i < img_h; i++){
