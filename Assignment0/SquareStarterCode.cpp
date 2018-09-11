@@ -89,14 +89,11 @@ unsigned char* loadImage(int& img_w, int& img_h){
         exit(1);
     }
     
-    //TODO:
-    //char nextValue;
+
     int currentIndex = 0;
     int red, green, blue;
     // the loop below crashes
     while(ppmFile >> red >> green >> blue){
-        //img_data[currentIndex] = nextValue;
-        
         // darken the image before storing into the texture data
         const int darknessAmount = 50;
         red -= darknessAmount;
@@ -115,7 +112,6 @@ unsigned char* loadImage(int& img_w, int& img_h){
         if (blue < 0) {
             blue = 0;
         }
-        
         
         img_data[currentIndex] = red;
         img_data[currentIndex + 1] = green;
@@ -137,8 +133,6 @@ unsigned char* loadImage(int& img_w, int& img_h){
             img_data[i*img_w*4 + j*4 + 3] = 255;  //Alpha
         }
     }*/
-    
-    // brighten/darken image - can probably change the RGB values like changing the brightness value
     
     return img_data;
 }
@@ -184,17 +178,39 @@ void mouseClicked(float m_x, float m_y){
     // x and y is the click position normalized to size of the square, with (-1,-1) at one corner (1,1) the other
     float x = m_x - g_pos_x;
     float y = m_y - g_pos_y;
-    x = x / g_size;
-    y = y / g_size;
+    
+    // as x and y are only used for position checking, we only need to look at abs values
+    x = abs(x / g_size);
+    y = abs(y / g_size);
     
     printf("Normalized click coord: %f, %f\n",x,y);
     
-    if (x > 1.05 || y > 1.05 || x < -1.05 || y < -1.05) return; //TODO: Test your understanding: Why 1.05 and not 1?
+    // TODO: once my if statement works, this block can be removed
+    /*if (x > 1.05 || y > 1.05 || x < -1.05 || y < -1.05) return; //TODO: Test your understanding: Why 1.05 and not 1?
     if (x < .9 && x > -.9 && y < .9 && y > -.9){ //TODO: Test your understanding: What happens if you change .9 to .8?
         g_bTranslate = true;
     } else {
         g_bScale = true;
+    }*/
+    
+    
+    // if it's outside the square, do nothing
+    if (x > 1.05 || y > 1.05) {
+        cout << "outside square" << endl;
+        return;
     }
+    
+    if (x > 0.9 && y > 0.9) {
+        g_bRotate = true;
+        cout << "rotate" << endl;
+    } else if (x > 0.9 || y > 0.9) {
+        cout << "scale" << endl;
+        g_bScale = true;
+    } else {
+        cout << "translate" << endl;
+        g_bTranslate = true;
+    }
+    
 
 }
 
