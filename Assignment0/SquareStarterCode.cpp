@@ -2,7 +2,7 @@
 //Starter code for the first homework assignment.
 //This code assumes SDL2 and OpenGL are both properly installed on your system
 
-#include "glad/glad.h"  //Include order can matter here
+#include "glad.h"  //Include order can matter here
 #if defined(__APPLE__) || defined(__linux__)
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
@@ -33,6 +33,9 @@ float vertices[] = {  //These values should be updated to match the square's sta
     0.3f, -0.3f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, // bottom right
     -0.3f,  0.3f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,  // top left
     -0.3f, -0.3f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,  // bottom left
+    
+    // these vertices are for the graphical indicator displayed that depends on the motion currently performed
+    
 }; 
 
 int screen_width = 800;
@@ -79,7 +82,9 @@ unsigned char* loadImage(int& img_w, int& img_h){
     
     //Read in the texture width and height
     ppmFile >> img_w >> img_h;
-    unsigned char* img_data = new unsigned char[4*img_w*img_h];
+    int imgSize = img_w * img_h;
+    int imgSizeAllChannels = 4 * imgSize;
+    unsigned char* img_data = new unsigned char[imgSizeAllChannels];
     
     //Check that the 3rd line is 255 (ie., this is an 8 bit/pixel PPM)
     int maximum;
@@ -89,13 +94,26 @@ unsigned char* loadImage(int& img_w, int& img_h){
         exit(1);
     }
     
+    cout << "img_w: " << img_w << endl;
+    cout << "img_h: " << img_h << endl;
+    cout << "imgSize: " << imgSizeAllChannels << endl;
+    // imgSize looks right
 
-    int currentIndex = 0;
+    int currentIndex = imgSizeAllChannels - 1;
+    currentIndex = 0;
+    //
+    int lastLocation = imgSizeAllChannels - 1;
     int red, green, blue;
-    // the loop below crashes
+    
+    
+    
+    unsigned char *reds = new unsigned char[imgSize];
+    unsigned char *greens = new unsigned char[imgSize];
+    unsigned char *blues = new unsigned char[imgSize];
+    
     while(ppmFile >> red >> green >> blue){
         // darken the image before storing into the texture data
-        const int darknessAmount = 50;
+        const int darknessAmount = 60;
         red -= darknessAmount;
         green -= darknessAmount;
         blue -= darknessAmount;
@@ -113,26 +131,41 @@ unsigned char* loadImage(int& img_w, int& img_h){
             blue = 0;
         }
         
-        img_data[currentIndex] = red;
+        
+        reds[currentIndex] = red;
+        greens[currentIndex] = green;
+        blues[currentIndex] = blue;
+        currentIndex++;
+        
+        
+        // works but is flipped horizontally
+        /*img_data[currentIndex] = red;
         img_data[currentIndex + 1] = green;
         img_data[currentIndex + 2] = blue;
         img_data[currentIndex + 3] = 255;
-        currentIndex += 4;
+        currentIndex += 4;*/
+        
+        // this is the half-working flipping code
+        /*img_data[currentIndex - 3] = red;
+        img_data[currentIndex - 2] = green;
+        img_data[currentIndex - 1] = blue;
+        img_data[currentIndex] = 255;
+        currentIndex -= 4;*/
     }
     
 
     
     //TODO: This loop puts in fake data, replace with the actual pixels read from the file
-    /*for (int i = 0; i < img_h; i++){
+    for (int i = 0; i < img_h; i++){
         float fi = i/(float)img_h;
         for (int j = 0; j < img_w; j++){
             float fj = j/(float)img_w;
-            img_data[i*img_w*4 + j*4] = 50;  //Red
-            img_data[i*img_w*4 + j*4 + 1] = fj*150;  //Green
-            img_data[i*img_w*4 + j*4 + 2] = fi*250;  //Blue
+            img_data[i*img_w*4 + j*4] = reds[imgSize - 1 - i * img_w + j];  //Red
+            img_data[i*img_w*4 + j*4 + 1] = greens[imgSize - 1 - i * img_w + j];  //Green
+            img_data[i*img_w*4 + j*4 + 2] = blues[imgSize - 1 - i * img_w + j];  //Blue
             img_data[i*img_w*4 + j*4 + 3] = 255;  //Alpha
         }
-    }*/
+    }
     
     return img_data;
 }
@@ -160,8 +193,7 @@ void updateVertices(){
     vertices[22] =  g_pos_y + vy;  //Bottom left y
 }
 
-//TODO: Choose between translate, rotate, and scale based on where the user clicked
-// I've implemented the logic for translate and scale, but you need to add rotate
+// Choose between translate, rotate, and scale based on where the user clicked
 void mouseClicked(float m_x, float m_y){   
     printf("Clicked at %f, %f\n",m_x,m_y);
     g_clicked_x = m_x;
@@ -196,18 +228,14 @@ void mouseClicked(float m_x, float m_y){
     
     // if it's outside the square, do nothing
     if (x > 1.05 || y > 1.05) {
-        cout << "outside square" << endl;
         return;
     }
     
     if (x > 0.9 && y > 0.9) {
         g_bRotate = true;
-        cout << "rotate" << endl;
     } else if (x > 0.9 || y > 0.9) {
-        cout << "scale" << endl;
         g_bScale = true;
     } else {
-        cout << "translate" << endl;
         g_bTranslate = true;
     }
     
@@ -242,6 +270,7 @@ void mouseDragged(float m_x, float m_y) {
     
     if (g_bRotate){
         //Compute the new angle, g_angle, based on the mouse positions
+        // maybe it could be based on looking at the distance from the center of the square (the mouse down point and the current point) to get an angle (with an imaginary unit circle)
     }
     
     updateVertices();
