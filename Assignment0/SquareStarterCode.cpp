@@ -25,7 +25,7 @@ float g_pos_x = 0.0f;
 float g_pos_y = 0.0f;
 
 float g_size = 0.6f;
-float g_angle = M_PI / 2;
+float g_angle = 3 * M_PI / 2;
 // pi and 2 pi work, pi / 2 - nothing appears
 
 float vertices[] = {  //These values should be updated to match the square's state when it changes
@@ -62,6 +62,9 @@ void mouseDragged(float mx, float my);
 bool g_bTranslate = false;
 bool g_bRotate = false;
 bool g_bScale = false;
+
+// Set this flag to true to have the square rotate without any user input
+bool isAutomaticallyRotating = false;
 
 //////////////////////////
 ///  Begin your code here
@@ -159,6 +162,11 @@ unsigned char* loadImage(int& img_w, int& img_h){
 
 //TODO: Account for rotation by g_angle
 void updateVertices(){
+    
+    // this is what actually adjusts the square when it's being automatically rotated
+    if (isAutomaticallyRotating) {
+        g_angle += 0.005;
+    }
     
     cout << "position x: " << g_pos_x << endl;
     cout << "position y: " << g_pos_y << endl;
@@ -462,6 +470,8 @@ int main(int argc, char *argv[]){
         else{
             g_mouse_down = false;
         }
+        
+        updateVertices();
         
         glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW); //upload vertices to vbo
         
