@@ -26,23 +26,13 @@ float g_pos_y = 0.0f;
 
 float g_size = 0.6f;
 float g_angle = 0;
-// pi and 2 pi work, pi / 2 - nothing appears
 
-float vertices[] = {  //These values should be updated to match the square's state when it changes
+float vertices[] = {
     //  X     Y     R     G     B     U    V
-    0.3f,  0.3f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,  // top right    indices 0...6
-    0.3f, -0.3f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, // bottom right  indices 7...13
-    -0.3f,  0.3f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,  // top left    indices 14...20
-    -0.3f, -0.3f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,  // bottom left indices 21...28
-    -0.3f,  0.3f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,  // top left    indices 36...42
-    0.3f, -0.3f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, // bottom right  indices 29...35
-    
-    
-    // these vertices are for the graphical indicator displayed that depends on the motion currently performed
-    0.5f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f,   // top right    indices 43...49
-    0.5f, 0.4f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f,   // bottom right indices 50...56
-    0.4f, 0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,   // top left     indices 57...63
-    0.4f, 0.4f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f   // bottom left   indices 64...70
+    0.3f,  0.3f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,  // top right
+    0.3f, -0.3f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, // bottom right
+    -0.3f,  0.3f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,  // top left
+    -0.3f, -0.3f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,  // bottom left
 }; 
 
 int screen_width = 800;
@@ -104,11 +94,9 @@ unsigned char* loadImage(int& img_w, int& img_h){
         exit(1);
     }
 
-    // imgSize looks right
 
+    // variables used for while loop
     int currentIndex = 0;
-    //currentIndex = 0;
-    //
     int red, green, blue;
     
     
@@ -190,7 +178,6 @@ void updateVertices(){
 
 // Choose between translate, rotate, and scale based on where the user clicked
 void mouseClicked(float m_x, float m_y){   
-    printf("Clicked at %f, %f\n",m_x,m_y);
     g_clicked_x = m_x;
     g_clicked_y = m_y;
     g_lastCenter_x = g_pos_x;
@@ -209,8 +196,6 @@ void mouseClicked(float m_x, float m_y){
     // as x and y are only used for position checking, we only need to look at abs values
     x = abs(x / g_size);
     y = abs(y / g_size);
-    
-    printf("Normalized click coord: %f, %f\n",x,y);
 
     // if it's outside the square, do nothing
     if (x > 1.05 || y > 1.05) {
