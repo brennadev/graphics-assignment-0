@@ -25,17 +25,24 @@ float g_pos_x = 0.0f;
 float g_pos_y = 0.0f;
 
 float g_size = 0.6f;
-float g_angle = 0;
+float g_angle = M_PI / 2;
+// pi and 2 pi work, pi / 2 - nothing appears
 
 float vertices[] = {  //These values should be updated to match the square's state when it changes
     //  X     Y     R     G     B     U    V
-    0.3f,  0.3f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,  // top right
-    0.3f, -0.3f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, // bottom right
-    -0.3f,  0.3f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,  // top left
-    -0.3f, -0.3f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,  // bottom left
+    0.3f,  0.3f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,  // top right    indices 0...6
+    0.3f, -0.3f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, // bottom right  indices 7...13
+    -0.3f,  0.3f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,  // top left    indices 14...20
+    -0.3f, -0.3f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,  // bottom left indices 21...28
+    -0.3f,  0.3f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,  // top left    indices 36...42
+    0.3f, -0.3f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, // bottom right  indices 29...35
+    
     
     // these vertices are for the graphical indicator displayed that depends on the motion currently performed
-    
+    0.5f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f,   // top right    indices 43...49
+    0.5f, 0.4f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f,   // bottom right indices 50...56
+    0.4f, 0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,   // top left     indices 57...63
+    0.4f, 0.4f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f   // bottom left   indices 64...70
 }; 
 
 int screen_width = 800;
@@ -93,10 +100,7 @@ unsigned char* loadImage(int& img_w, int& img_h){
         printf("ERROR: Maximum size is (%d) not 255.\n",maximum);
         exit(1);
     }
-    
-    cout << "img_w: " << img_w << endl;
-    cout << "img_h: " << img_h << endl;
-    cout << "imgSize: " << imgSizeAllChannels << endl;
+
     // imgSize looks right
 
     int currentIndex = imgSizeAllChannels - 1;
@@ -136,30 +140,13 @@ unsigned char* loadImage(int& img_w, int& img_h){
         greens[currentIndex] = green;
         blues[currentIndex] = blue;
         currentIndex++;
-        
-        
-        // works but is flipped horizontally
-        /*img_data[currentIndex] = red;
-        img_data[currentIndex + 1] = green;
-        img_data[currentIndex + 2] = blue;
-        img_data[currentIndex + 3] = 255;
-        currentIndex += 4;*/
-        
-        // this is the half-working flipping code
-        /*img_data[currentIndex - 3] = red;
-        img_data[currentIndex - 2] = green;
-        img_data[currentIndex - 1] = blue;
-        img_data[currentIndex] = 255;
-        currentIndex -= 4;*/
     }
     
 
     
     //TODO: This loop puts in fake data, replace with the actual pixels read from the file
     for (int i = 0; i < img_h; i++){
-        float fi = i/(float)img_h;
         for (int j = 0; j < img_w; j++){
-            float fj = j/(float)img_w;
             img_data[i*img_w*4 + j*4] = reds[imgSize - 1 - i * img_w + j];  //Red
             img_data[i*img_w*4 + j*4 + 1] = greens[imgSize - 1 - i * img_w + j];  //Green
             img_data[i*img_w*4 + j*4 + 2] = blues[imgSize - 1 - i * img_w + j];  //Blue
@@ -171,26 +158,44 @@ unsigned char* loadImage(int& img_w, int& img_h){
 }
 
 //TODO: Account for rotation by g_angle
-void updateVertices(){ 
+void updateVertices(){
+    
+    cout << "position x: " << g_pos_x << endl;
+    cout << "position y: " << g_pos_y << endl;
+    cout << "angle: " << g_angle << endl;
+    cout << "size: " << g_size << endl;
+    
     float vx = g_size;
     float vy =  g_size;
-    vertices[0] = g_pos_x + vx;  //Top right x
-    vertices[1] = g_pos_y + vy;  //Top right y
+    vertices[0] = g_pos_x + cos(g_angle) * vx - sin(g_angle) * vy;  //Top right x
+    vertices[1] = g_pos_y + sin(g_angle) * vx + cos(g_angle) * vy;  //Top right y
+    cout << "0: " << vertices[0] << endl;
+    cout << "1: " << vertices[1] << endl;
     
     vx = g_size;
     vy = - g_size;
-    vertices[7] = g_pos_x + vx;  //Bottom right x
-    vertices[8] = g_pos_y + vy;  //Bottom right y
+    vertices[7] = g_pos_x + cos(g_angle) * vx - sin(g_angle) * vy;  //Bottom right x
+    vertices[8] = g_pos_y + sin(g_angle) * vx + cos(g_angle) * vy;  //Bottom right y
+    cout << "7: " << vertices[7] << endl;
+    cout << "8: " << vertices[8] << endl;
+    //vertices[36] = vertices[7];
+    //vertices[37] = vertices[8];
     
     vx = - g_size;
     vy = + g_size;
-    vertices[14] =  g_pos_x + vx;  //Top left x
-    vertices[15] =  g_pos_y + vy;  //Top left y
+    vertices[14] =  g_pos_x + cos(g_angle) * vx - sin(g_angle) * vy;  //Top left x
+    vertices[15] =  g_pos_y + sin(g_angle) * vx + cos(g_angle) * vy;  //Top left y
+    cout << "14: " << vertices[14] << endl;
+    cout << "15: " << vertices[15] << endl;
+    //vertices[29] = vertices[14];
+    //vertices[30] = vertices[15];
     
     vx = - g_size;
     vy = - g_size;
-    vertices[21] =  g_pos_x + vx;  //Bottom left x
-    vertices[22] =  g_pos_y + vy;  //Bottom left y
+    vertices[21] =  g_pos_x + cos(g_angle) * vx - sin(g_angle) * vy;  //Bottom left x
+    vertices[22] =  g_pos_y + sin(g_angle) * vx + cos(g_angle) * vy;  //Bottom left y
+    cout << "21: " << vertices[21] << endl;
+    cout << "22: " << vertices[22] << endl;
 }
 
 // Choose between translate, rotate, and scale based on where the user clicked
@@ -216,16 +221,7 @@ void mouseClicked(float m_x, float m_y){
     y = abs(y / g_size);
     
     printf("Normalized click coord: %f, %f\n",x,y);
-    
-    // TODO: once my if statement works, this block can be removed
-    /*if (x > 1.05 || y > 1.05 || x < -1.05 || y < -1.05) return; //TODO: Test your understanding: Why 1.05 and not 1?
-    if (x < .9 && x > -.9 && y < .9 && y > -.9){ //TODO: Test your understanding: What happens if you change .9 to .8?
-        g_bTranslate = true;
-    } else {
-        g_bScale = true;
-    }*/
-    
-    
+
     // if it's outside the square, do nothing
     if (x > 1.05 || y > 1.05) {
         return;
