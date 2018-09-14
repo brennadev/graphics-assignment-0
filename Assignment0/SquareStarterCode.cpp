@@ -168,10 +168,6 @@ void updateVertices(){
         g_angle += 0.005;
     }
     
-    cout << "position x: " << g_pos_x << endl;
-    cout << "position y: " << g_pos_y << endl;
-    cout << "angle: " << g_angle << endl;
-    cout << "size: " << g_size << endl;
     
     float vx = g_size;
     float vy =  g_size;
@@ -186,8 +182,6 @@ void updateVertices(){
     vertices[8] = g_pos_y + sin(g_angle) * vx + cos(g_angle) * vy;  //Bottom right y
     cout << "7: " << vertices[7] << endl;
     cout << "8: " << vertices[8] << endl;
-    //vertices[36] = vertices[7];
-    //vertices[37] = vertices[8];
     
     vx = - g_size;
     vy = + g_size;
@@ -195,8 +189,6 @@ void updateVertices(){
     vertices[15] =  g_pos_y + sin(g_angle) * vx + cos(g_angle) * vy;  //Top left y
     cout << "14: " << vertices[14] << endl;
     cout << "15: " << vertices[15] << endl;
-    //vertices[29] = vertices[14];
-    //vertices[30] = vertices[15];
     
     vx = - g_size;
     vy = - g_size;
