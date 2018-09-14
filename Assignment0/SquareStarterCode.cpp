@@ -25,7 +25,7 @@ float g_pos_x = 0.0f;
 float g_pos_y = 0.0f;
 
 float g_size = 0.6f;
-float g_angle = 3 * M_PI / 2;
+float g_angle = 0;
 // pi and 2 pi work, pi / 2 - nothing appears
 
 float vertices[] = {  //These values should be updated to match the square's state when it changes
@@ -64,7 +64,7 @@ bool g_bRotate = false;
 bool g_bScale = false;
 
 // Set this flag to true to have the square rotate without any user input
-bool isAutomaticallyRotating = false;
+bool isAutomaticallyRotating = true;
 
 //////////////////////////
 ///  Begin your code here
@@ -106,14 +106,13 @@ unsigned char* loadImage(int& img_w, int& img_h){
 
     // imgSize looks right
 
-    int currentIndex = imgSizeAllChannels - 1;
-    currentIndex = 0;
+    int currentIndex = 0;
+    //currentIndex = 0;
     //
-    int lastLocation = imgSizeAllChannels - 1;
     int red, green, blue;
     
     
-    
+    // need an intermediary place to store the color data after reading it in
     unsigned char *reds = new unsigned char[imgSize];
     unsigned char *greens = new unsigned char[imgSize];
     unsigned char *blues = new unsigned char[imgSize];
@@ -144,10 +143,9 @@ unsigned char* loadImage(int& img_w, int& img_h){
         blues[currentIndex] = blue;
         currentIndex++;
     }
-    
 
     
-    //TODO: This loop puts in fake data, replace with the actual pixels read from the file
+    // reverses the color data to actually store it
     for (int i = 0; i < img_h; i++){
         for (int j = 0; j < img_w; j++){
             img_data[i*img_w*4 + j*4] = reds[imgSize - 1 - i * img_w + j];  //Red
@@ -160,42 +158,34 @@ unsigned char* loadImage(int& img_w, int& img_h){
     return img_data;
 }
 
-//TODO: Account for rotation by g_angle
+
 void updateVertices(){
     
     // this is what actually adjusts the square when it's being automatically rotated
     if (isAutomaticallyRotating) {
         g_angle += 0.005;
     }
-    
+
     
     float vx = g_size;
     float vy =  g_size;
     vertices[0] = g_pos_x + cos(g_angle) * vx - sin(g_angle) * vy;  //Top right x
     vertices[1] = g_pos_y + sin(g_angle) * vx + cos(g_angle) * vy;  //Top right y
-    cout << "0: " << vertices[0] << endl;
-    cout << "1: " << vertices[1] << endl;
     
     vx = g_size;
     vy = - g_size;
     vertices[7] = g_pos_x + cos(g_angle) * vx - sin(g_angle) * vy;  //Bottom right x
     vertices[8] = g_pos_y + sin(g_angle) * vx + cos(g_angle) * vy;  //Bottom right y
-    cout << "7: " << vertices[7] << endl;
-    cout << "8: " << vertices[8] << endl;
     
     vx = - g_size;
     vy = + g_size;
     vertices[14] =  g_pos_x + cos(g_angle) * vx - sin(g_angle) * vy;  //Top left x
     vertices[15] =  g_pos_y + sin(g_angle) * vx + cos(g_angle) * vy;  //Top left y
-    cout << "14: " << vertices[14] << endl;
-    cout << "15: " << vertices[15] << endl;
     
     vx = - g_size;
     vy = - g_size;
     vertices[21] =  g_pos_x + cos(g_angle) * vx - sin(g_angle) * vy;  //Bottom left x
     vertices[22] =  g_pos_y + sin(g_angle) * vx + cos(g_angle) * vy;  //Bottom left y
-    cout << "21: " << vertices[21] << endl;
-    cout << "22: " << vertices[22] << endl;
 }
 
 // Choose between translate, rotate, and scale based on where the user clicked
