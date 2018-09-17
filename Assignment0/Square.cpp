@@ -46,6 +46,9 @@ float g_lastCenter_y = -1;
 float g_clicked_angle = -1;
 float g_clicked_size = -1;
 
+float g_clicked_x_scaled_rotated = -1;
+float g_clicked_y_scaled_rotated = -1;
+
 void mouseClicked(float mx, float my);
 void mouseDragged(float mx, float my);
 
@@ -53,8 +56,14 @@ bool g_bTranslate = false;
 bool g_bRotate = false;
 bool g_bScale = false;
 
-// Set this flag to true to have the square rotate without any user input
+/// Set this flag to true to have the square rotate without any user input
 bool isAutomaticallyRotating = false;
+
+/// A point in a 2d coordinate system
+struct Point {
+    float x;
+    float y;
+};
 
 //////////////////////////
 ///  Begin your code here
@@ -176,8 +185,14 @@ void updateVertices(){
     vertices[22] =  g_pos_y + sin(g_angle) * vx + cos(g_angle) * vy;  //Bottom left y
 }
 
+/// Get a point converted to
+//struct Point getPointInSquareCoordinates() {
+    //return struct Point {}
+//}
+
 // Choose between translate, rotate, and scale based on where the user clicked
 void mouseClicked(float m_x, float m_y){   
+    printf("Clicked at %f, %f\n",m_x,m_y);
     g_clicked_x = m_x;
     g_clicked_y = m_y;
     g_lastCenter_x = g_pos_x;
@@ -190,12 +205,26 @@ void mouseClicked(float m_x, float m_y){
     g_bScale = false;
     
     // x and y is the click position normalized to size of the square, with (-1,-1) at one corner (1,1) the other
-    float x = m_x - g_pos_x;
-    float y = m_y - g_pos_y;
+    float xScaled = m_x - g_pos_x;
+    float yScaled = m_y - g_pos_y;
+    
+    float negativeAngle = g_angle * -1;
+    
+    // convert to the square's coordinate system (necessary if the square is rotated)
+    float x = cos(negativeAngle) * xScaled - sin(negativeAngle) * yScaled;
+    float y = sin(negativeAngle) * xScaled + cos(negativeAngle) * yScaled;
+    
+    // these values will be needed in mouseDragged
+    g_clicked_x_scaled_rotated = x;
+    g_clicked_y_scaled_rotated = y;
     
     // as x and y are only used for position checking, we only need to look at abs values
     x = abs(x / g_size);
     y = abs(y / g_size);
+    
+    printf("Normalized click coord: %f, %f\n",xScaled,yScaled);
+    cout << "x after rotate: " << x << endl;
+    cout << "y after rotate: " << y << endl;
 
     // if it's outside the square, do nothing
     if (x > 1.05 || y > 1.05) {
@@ -204,10 +233,13 @@ void mouseClicked(float m_x, float m_y){
     
     if (x > 0.9 && y > 0.9) {
         g_bRotate = true;
+        cout << "rotating" << endl;
     } else if (x > 0.9 || y > 0.9) {
         g_bScale = true;
+        cout << "scaling" << endl;
     } else {
         g_bTranslate = true;
+        cout << "translating" << endl;
     }
     
 
@@ -243,11 +275,20 @@ void mouseDragged(float m_x, float m_y) {
         //Compute the new angle, g_angle, based on the mouse positions
         // maybe it could be based on looking at the distance from the center of the square (the mouse down point and the current point) to get an angle (with an imaginary unit circle)
         
+        // need to view the positions in the square's coordinate system
+        
+        /*float negativeAngle = g_angle * -1;
+        float xRotated = cos(negativeAngle) * m_x - sin(negativeAngle) * m_y;
+        float yRotated = sin(negativeAngle) * m_x + cos(negativeAngle) * m_y;
+        
+        double mouseDownAngle = atan2(g_clicked_x_scaled_rotated, g_clicked_y_scaled_rotated);
+        double mouseDraggedAngle = atan2(xRotated, yRotated);*/
         
         double mouseDownAngle = atan2(g_clicked_x, g_clicked_y);
         double mouseDraggedAngle = atan2(m_x, m_y);
         
         g_angle = mouseDownAngle - mouseDraggedAngle;
+        cout << "angle: " << g_angle << endl;
     }
     
     updateVertices();
