@@ -215,8 +215,8 @@ void mouseClicked(float m_x, float m_y){
     float y = sin(negativeAngle) * xScaled + cos(negativeAngle) * yScaled;
     
     // these values will be needed in mouseDragged
-    g_clicked_x_scaled_rotated = x;
-    g_clicked_y_scaled_rotated = y;
+    //g_clicked_x_scaled_rotated = x;
+    //g_clicked_y_scaled_rotated = y;
     
     // as x and y are only used for position checking, we only need to look at abs values
     x = abs(x / g_size);
@@ -287,7 +287,10 @@ void mouseDragged(float m_x, float m_y) {
         double mouseDownAngle = atan2(g_clicked_x, g_clicked_y);
         double mouseDraggedAngle = atan2(m_x, m_y);
         
-        g_angle = mouseDownAngle - mouseDraggedAngle;
+        cout << "mouseDownAngle: " << mouseDownAngle << endl;
+        cout << "mouseDraggedAngle: " << mouseDraggedAngle << endl;
+        
+        g_angle = mouseDownAngle - mouseDraggedAngle + g_clicked_angle;
         cout << "angle: " << g_angle << endl;
     }
     
