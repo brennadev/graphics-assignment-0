@@ -54,7 +54,7 @@ bool g_bRotate = false;
 bool g_bScale = false;
 
 // Set this flag to true to have the square rotate without any user input
-bool isAutomaticallyRotating = true;
+bool isAutomaticallyRotating = false;
 
 //////////////////////////
 ///  Begin your code here
@@ -242,6 +242,12 @@ void mouseDragged(float m_x, float m_y) {
     if (g_bRotate){
         //Compute the new angle, g_angle, based on the mouse positions
         // maybe it could be based on looking at the distance from the center of the square (the mouse down point and the current point) to get an angle (with an imaginary unit circle)
+        
+        
+        double mouseDownAngle = atan2(g_clicked_x, g_clicked_y);
+        double mouseDraggedAngle = atan2(m_x, m_y);
+        
+        g_angle = mouseDownAngle - mouseDraggedAngle;
     }
     
     updateVertices();

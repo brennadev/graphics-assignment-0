@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		656D762421495B3D004BFE97 /* glad.c in Sources */ = {isa = PBXBuildFile; fileRef = 656D762221495B3D004BFE97 /* glad.c */; };
-		65BE8AE021406C9C004B8021 /* SquareStarterCode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 65BE8ADB21406C9C004B8021 /* SquareStarterCode.cpp */; };
+		65BE8AE021406C9C004B8021 /* Square.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 65BE8ADB21406C9C004B8021 /* Square.cpp */; };
 		65BE8AE32141921B004B8021 /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65BE8AE22141921B004B8021 /* SDL2.framework */; };
 /* End PBXBuildFile section */
 
@@ -29,7 +29,7 @@
 		656D762221495B3D004BFE97 /* glad.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = glad.c; path = "Assignment0/New Group/glad.c"; sourceTree = SOURCE_ROOT; };
 		656D762321495B3D004BFE97 /* glad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = glad.h; path = "Assignment0/New Group/glad.h"; sourceTree = SOURCE_ROOT; };
 		65BE8AD021406C44004B8021 /* Assignment0 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Assignment0; sourceTree = BUILT_PRODUCTS_DIR; };
-		65BE8ADB21406C9C004B8021 /* SquareStarterCode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SquareStarterCode.cpp; sourceTree = "<group>"; };
+		65BE8ADB21406C9C004B8021 /* Square.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Square.cpp; sourceTree = "<group>"; };
 		65BE8ADC21406C9C004B8021 /* goldy.ppm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = goldy.ppm; sourceTree = "<group>"; };
 		65BE8ADD21406C9C004B8021 /* brick.ppm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = brick.ppm; sourceTree = "<group>"; };
 		65BE8ADE21406C9C004B8021 /* goldySmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = goldySmall.png; sourceTree = "<group>"; };
@@ -85,7 +85,7 @@
 				65BE8ADD21406C9C004B8021 /* brick.ppm */,
 				65BE8ADC21406C9C004B8021 /* goldy.ppm */,
 				65BE8ADE21406C9C004B8021 /* goldySmall.png */,
-				65BE8ADB21406C9C004B8021 /* SquareStarterCode.cpp */,
+				65BE8ADB21406C9C004B8021 /* Square.cpp */,
 				65BE8AE421482764004B8021 /* run.sh */,
 				65BE8ADF21406C9C004B8021 /* test.ppm */,
 			);
@@ -156,7 +156,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				65BE8AE021406C9C004B8021 /* SquareStarterCode.cpp in Sources */,
+				65BE8AE021406C9C004B8021 /* Square.cpp in Sources */,
 				656D762421495B3D004BFE97 /* glad.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
