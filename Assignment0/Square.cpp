@@ -20,7 +20,6 @@ using namespace std;
 string textureName = "goldy.ppm";
 
 //Globals to store the state of the square (position, width, and angle)
-// position is based on center of square
 float g_pos_x = 0.0f;
 float g_pos_y = 0.0f;
 
@@ -45,9 +44,6 @@ float g_lastCenter_x = -1;
 float g_lastCenter_y = -1;
 float g_clicked_angle = -1;
 float g_clicked_size = -1;
-
-float g_clicked_x_scaled_rotated = -1;
-float g_clicked_y_scaled_rotated = -1;
 
 void mouseClicked(float mx, float my);
 void mouseDragged(float mx, float my);
@@ -157,7 +153,6 @@ unsigned char* loadImage(int& img_w, int& img_h){
 
 
 void updateVertices(){
-    
     // this is what actually adjusts the square when it's being automatically rotated
     if (isAutomaticallyRotating) {
         g_angle += 0.005;
@@ -185,14 +180,9 @@ void updateVertices(){
     vertices[22] =  g_pos_y + sin(g_angle) * vx + cos(g_angle) * vy;  //Bottom left y
 }
 
-/// Get a point converted to
-//struct Point getPointInSquareCoordinates() {
-    //return struct Point {}
-//}
 
 // Choose between translate, rotate, and scale based on where the user clicked
-void mouseClicked(float m_x, float m_y){   
-    printf("Clicked at %f, %f\n",m_x,m_y);
+void mouseClicked(float m_x, float m_y){
     g_clicked_x = m_x;
     g_clicked_y = m_y;
     g_lastCenter_x = g_pos_x;
@@ -213,18 +203,12 @@ void mouseClicked(float m_x, float m_y){
     // convert to the square's coordinate system (necessary if the square is rotated)
     float x = cos(negativeAngle) * xScaled - sin(negativeAngle) * yScaled;
     float y = sin(negativeAngle) * xScaled + cos(negativeAngle) * yScaled;
-    
-    // these values will be needed in mouseDragged
-    //g_clicked_x_scaled_rotated = x;
-    //g_clicked_y_scaled_rotated = y;
+
     
     // as x and y are only used for position checking, we only need to look at abs values
     x = abs(x / g_size);
     y = abs(y / g_size);
-    
-    printf("Normalized click coord: %f, %f\n",xScaled,yScaled);
-    cout << "x after rotate: " << x << endl;
-    cout << "y after rotate: " << y << endl;
+
 
     // if it's outside the square, do nothing
     if (x > 1.05 || y > 1.05) {
@@ -233,30 +217,20 @@ void mouseClicked(float m_x, float m_y){
     
     if (x > 0.9 && y > 0.9) {
         g_bRotate = true;
-        cout << "rotating" << endl;
     } else if (x > 0.9 || y > 0.9) {
         g_bScale = true;
-        cout << "scaling" << endl;
     } else {
         g_bTranslate = true;
-        cout << "translating" << endl;
     }
-    
-
 }
 
-//TODO: Update the position, rotation, or scale based on the mouse movement
-//  I've implemented the logic for position, you need to do scaling and angle
-//TODO: Notice how smooth draging the square is (e.g., there are no "jumps" when you click), 
-//      try to make your implementation of rotate and scale as smooth
+
 void mouseDragged(float m_x, float m_y) {
-    // to only translate if inside the square - compare the mouse position to the square's area and see if it falls in the square's area; if it does, then move the square; else, do nothing
     if (g_bTranslate){
         g_pos_x = m_x-g_clicked_x+g_lastCenter_x;
         g_pos_y = m_y-g_clicked_y+g_lastCenter_y;
     }
     
-    // Compute the new size, g_size, based on the mouse positions
     if (g_bScale){
         // scale when dragging on the edges - take into account drags in both x and y direction
         g_size = (m_x - g_clicked_x) + (m_y - g_clicked_y) + g_clicked_size;
@@ -271,29 +245,13 @@ void mouseDragged(float m_x, float m_y) {
         }
     }
     
-    if (g_bRotate){
-        //Compute the new angle, g_angle, based on the mouse positions
-        // maybe it could be based on looking at the distance from the center of the square (the mouse down point and the current point) to get an angle (with an imaginary unit circle)
-        
-        // need to view the positions in the square's coordinate system
-        
-        /*float negativeAngle = g_angle * -1;
-        float xRotated = cos(negativeAngle) * m_x - sin(negativeAngle) * m_y;
-        float yRotated = sin(negativeAngle) * m_x + cos(negativeAngle) * m_y;
-        
-        double mouseDownAngle = atan2(g_clicked_x_scaled_rotated, g_clicked_y_scaled_rotated);
-        double mouseDraggedAngle = atan2(xRotated, yRotated);*/
-        
+    if (g_bRotate) {
+        // start by getting the angle relative to the x-axis for mouse down and mouse dragged (treating it like the theta component in polar coordinates)
         double mouseDownAngle = atan2(g_clicked_x, g_clicked_y);
         double mouseDraggedAngle = atan2(m_x, m_y);
         
-        cout << "mouseDownAngle: " << mouseDownAngle << endl;
-        cout << "mouseDraggedAngle: " << mouseDraggedAngle << endl;
-        
         g_angle = mouseDownAngle - mouseDraggedAngle + g_clicked_angle;
-        cout << "angle: " << g_angle << endl;
     }
-    
     updateVertices();
 }
 
