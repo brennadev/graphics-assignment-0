@@ -1,4 +1,5 @@
 # graphics-assignment-0
+Computer graphics basics through translating, scaling, and rotating an image.
 
 See [this page](https://sites.google.com/a/umn.edu/5607/0) for more information on the assignment.
 
